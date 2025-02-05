@@ -1,0 +1,4 @@
+# paths.py
+'''Módulo: paths'''
+
+
