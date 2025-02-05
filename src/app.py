@@ -30,25 +30,6 @@ st.markdown(
 # Título principal de la aplicación
 st.title('Alta hospitalaria')
 
-#Subtitulos
-st.markdown(
-    """
-    <style>
-    /* Cambiar estilo de los títulos (labels) */
-    .stRadio label, .stSlider label, .stCheckbox label {
-        color: #010369; /* Cambiar color de los títulos */
-        font-size: 50px !important;  
-        font-weight: bold; !important;
-        text-align: left !important; /* Opcional: alineación */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-
-#Variables
 st.subheader("Edad:")
 st.markdown(
     """
@@ -75,6 +56,27 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+#Subtitulos
+st.markdown(
+    """
+    <style>
+    /* Cambiar estilo de los títulos (labels) */
+    .stRadio label, .stSlider label, .stCheckbox label {
+        color: #010369; /* Cambiar color de los títulos */
+        font-size: 50px !important;  
+        font-weight: bold; !important;
+        text-align: left !important; /* Opcional: alineación */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
+#Variables
+
 region =  st.radio(
     "", 
     ['Región de Ñuble',
