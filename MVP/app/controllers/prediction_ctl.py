@@ -19,8 +19,7 @@ class PredictionController:
                 int(input_data["Género"]),
                 # ... Repite para todas las características ...
                 int(input_data["Embolia Pulmonar"]),
-                int(input_data["Infección Torácica"]),
-                int(input_data["REINGRESO"])
+                int(input_data["Infección Torácica"])
             ]
             
             # Obtener la predicción y las probabilidades
