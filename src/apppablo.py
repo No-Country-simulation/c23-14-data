@@ -4,24 +4,33 @@
 import streamlit as st
 import pandas as pd
 from pickle import load
+from sklearn.preprocessing import LabelEncoder
+
 
 # Cargar el modelo
 from joblib import load
 model = load("/workspaces/c23-14-data/Models/Model_RF.sav")
+
 # Título
 st.title('Predicción de Motivo de Alta Hospitalaria')
 
-# Subir archivo Excel
-uploaded_file = st.file_uploader("Subir archivo Excel", type=["xlsx"])
+# Subir archivo Excel o CSV
+uploaded_file = st.file_uploader("Subir archivo", type=["xlsx", "csv"])
 
 if uploaded_file is not None:
-    # Leer el archivo Excel
-    df = pd.read_excel(uploaded_file)
+    # Leer el archivo según su extensión
+    if uploaded_file.name.endswith(".xlsx"):
+        df_original = pd.read_excel(uploaded_file)
+    elif uploaded_file.name.endswith(".csv"):
+        df_original = pd.read_csv(uploaded_file)
+
+    # Copiar el dataframe original para trabajar con él sin modificarlo
+    df = df_original.copy()
 
     # Normalizar nombres de columnas (eliminar espacios, convertir a minúsculas)
     df.columns = df.columns.str.strip()
 
-    # Mostrar el contenido del archivo Excel
+    # Mostrar el contenido del archivo
     st.subheader("Datos cargados:")
     st.write(df.head())
 
@@ -50,21 +59,30 @@ if uploaded_file is not None:
         st.error(f"⚠️ Falta(n) las siguientes columnas en el archivo subido: {missing_columns}")
     else:
         st.success("✅ Todas las columnas necesarias están presentes.")
-
+        
         # Filtrar solo las columnas necesarias para evitar errores
-        df = df[features]
+        df_modelo = df[features].copy()
+
+        # Transformar columnas categóricas con Label Encoding
+        label_encoders = {}
+        categorical_columns = ['Género', 'Residencia', 'Tipo de Admisión']
+        for col in categorical_columns:
+            le = LabelEncoder()
+            df_modelo[col] = le.fit_transform(df_modelo[col])
+            label_encoders[col] = le
 
         # Hacer predicciones
-        predictions = model.predict(df)
+        predictions = model.predict(df_modelo)
 
-        # Mapear resultados de la predicción a texto
-        df["Predicción"] = predictions
-        df["Predicción"] = df["Predicción"].map({
+        # Agregar las predicciones al dataframe original
+        df_original["Predicción"] = predictions
+        df_original["Predicción"] = df_original["Predicción"].map({
             0: "Motivo de Alta: Alta contra el juicio del facultativo",
             1: "Motivo de Alta: Salud Plena",
             2: "Motivo de Alta: Fallecido"
         })
 
-        # Mostrar las predicciones
+        # Mostrar las predicciones junto con los datos originales
         st.subheader("Predicciones:")
-        st.write(df)
+        st.write(df_original)
+
