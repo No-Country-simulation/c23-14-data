@@ -130,6 +130,44 @@ if st.button('Realizar predicción'):
     tipo_admision = 1 if tipo_admision == "Emergencia" else 0  # "Emergencia"
     genero = 1 if genero == "Masculino" else 0  # Espacio innecesario removido
 
+    # Transformar los checkboxes en 1 o en 0 los True y False
+    # PROMPT: Transformar los checkboxes en 1 o en 0 (True o False)
+    fumador = 1 if fumador else 0
+    alcohol = 1 if alcohol else 0
+    diabetes = 1 if diabetes else 0
+    hipertension = 1 if hipertension else 0
+    enfermedad_coronaria = 1 if enfermedad_coronaria else 0
+    miocardiopatia = 1 if miocardiopatia else 0
+    enfermedad_renal_cronica = 1 if enfermedad_renal_cronica else 0
+    anemia_severa = 1 if anemia_severa else 0
+    anemia = 1 if anemia else 0
+    angina_estable = 1 if angina_estable else 0
+    sindrome_coronario_agudo = 1 if sindrome_coronario_agudo else 0
+    infarto_miocardio = 1 if infarto_miocardio else 0
+    dolor_toracico_atipico = 1 if dolor_toracico_atipico else 0
+    insuficiencia_card = 1 if insuficiencia_card else 0
+    insuficiencia_eje_reducida = 1 if insuficiencia_eje_reducida else 0
+    insuficiencia_eje_normal = 1 if insuficiencia_eje_normal else 0
+    enfermedad_valvular = 1 if enfermedad_valvular else 0
+    bloqueo_card = 1 if bloqueo_card else 0
+    sindrome_nodo_sinusal = 1 if sindrome_nodo_sinusal else 0
+    lesion_renal = 1 if lesion_renal else 0
+    accidente_cerebrovascular_isquemico = 1 if accidente_cerebrovascular_isquemico else 0
+    accidente_cerebrovascular_hemorragico = 1 if accidente_cerebrovascular_hemorragico else 0
+    fibrilacion_auricular = 1 if fibrilacion_auricular else 0
+    taquicardia_ventricular = 1 if taquicardia_ventricular else 0
+    taquicardia_supraventricular_paroxistica = 1 if taquicardia_supraventricular_paroxistica else 0
+    cardiopatia_congenita = 1 if cardiopatia_congenita else 0
+    infeccion_tracto_urinario = 1 if infeccion_tracto_urinario else 0
+    sincopo_neurocardiogenico = 1 if sincopo_neurocardiogenico else 0
+    ortostatico = 1 if ortostatico else 0
+    endocarditis_infecciosa = 1 if endocarditis_infecciosa else 0
+    trombosis_venosa_profunda = 1 if trombosis_venosa_profunda else 0
+    choque_cardiogenico = 1 if choque_cardiogenico else 0
+    shock = 1 if shock else 0
+    embolia_pulmonar = 1 if embolia_pulmonar else 0
+    infeccion_toracica = 1 if infeccion_toracica else 0
+    
     # Crear el vector de entrada para el modelo
     features = [
         edad, 
@@ -185,3 +223,21 @@ if st.button('Realizar predicción'):
         motivo = "Motivo de Alta: Fallecido"
 
     st.markdown(f"<p class='stText'>{motivo}</p>", unsafe_allow_html=True)
+
+     # Mostrar las features y sus valores
+    st.subheader("Valores de las características:")
+    for feature, value in zip([
+        "Edad", "Género", "Residencia", "Tipo de Admisión", "Fumador", "Consumo de Alcohol", 
+        "Diabetes Mellitus", "Hipertensión", "Enfermedad Coronaria", "Miocardiopatía", 
+        "Enfermedad Renal Crónica", "Anemia Severa", "Anemia", "Angina Estable", 
+        "Síndrome Coronario Agudo", "Infarto de Miocardio (STEMI)", "Dolor Torácico Atípico", 
+        "Insuficiencia Cardíaca", "Insuficiencia Cardíaca con Fracción de Eyección Reducida", 
+        "Insuficiencia Cardíaca con Fracción de Eyección Normal", "Enfermedad Valvular Cardíaca", 
+        "Bloqueo Cardíaco Completo", "Síndrome del Nodo Sinusal Enfermo", "Lesión Renal Aguda", 
+        "Accidente Cerebrovascular Isquémico", "Accidente Cerebrovascular Hemorrágico", 
+        "Fibrilación Auricular", "Taq. Ventricular", "Taquicardia Supraventricular Paroxística", 
+        "Cardiopatía Congénita", "Infección del Tracto Urinario", "Síncope Neurocardiogénico", 
+        "Ortostático", "Endocarditis Infecciosa", "Trombosis Venosa Profunda", "Choque Cardiogénico", 
+        "Shock", "Embolia Pulmonar", "Infección Torácica"
+    ], features):
+        st.write(f"{feature}: {value}")
