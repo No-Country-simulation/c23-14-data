@@ -173,3 +173,6 @@ if st.button('Realizar predicción'):
         motivo = "Motivo de Alta: Fallecimiento"
 
     st.markdown(f"<p class='stText'>{motivo}</p>", unsafe_allow_html=True)
+
+    # Listo
+    
