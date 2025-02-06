@@ -127,7 +127,7 @@ if st.button('Realizar predicción'):
     # Corregimos los tipos
     # Transformar residencia, tipo_admision, genero en booleans
     residencia = 1 if residencia == "Urbana" else 0  
-    tipo_admision = 1 if tipo_admision == "Emergencia" else 0  # "Emergencia"
+    tipo_admision = 0 if tipo_admision == "Emergencia" else 1  # "Emergencia"
     genero = 1 if genero == "Masculino" else 0  # Espacio innecesario removido
 
     # Transformar los checkboxes en 1 o en 0 los True y False
@@ -214,11 +214,12 @@ if st.button('Realizar predicción'):
     # Predicción con el modelo
     prediccion = model.predict([features])
     
+    
     # Mostrar la predicción de "Motivo de Alta"
     if prediccion[0] == 0:
         motivo = "Motivo de Alta: Alta contra el juicio del facultativo"
     elif prediccion[0] == 1:
-        motivo = "Motivo de Alta: Salud plena"
+        motivo = "Motivo de Alta: Salud Plena"
     else:
         motivo = "Motivo de Alta: Fallecido"
 
