@@ -1,3 +1,4 @@
+# se ejecuta con streamlit run src/app.py
 import streamlit as st
 from pickle import load
 
@@ -106,9 +107,20 @@ with st.expander("Infecciones y Trombosis"):
 # Otras condiciones
 with st.expander("Otras Condiciones"):
     anemia_severa = st.checkbox("Anemia Severa")
+    anemia = st.checkbox("Anemia")
     angina_estable = st.checkbox("Angina Estable")
     infarto_miocardio = st.checkbox("Infarto de Miocardio (STEMI)")
     dolor_toracico_atipico = st.checkbox("Dolor Torácico Atípico")
+    sindrome_coronario_agudo = st.checkbox("Síndrome Coronario Agudo")
+    enfermedad_renal_cronica = st.checkbox("Enfermedad Renal Crónica")
+    accidente_cerebrovascular_hemorragico = st.checkbox("Accidente Cerebrovascular Hemorrágico")
+    taquicardia_supraventricular_paroxistica = st.checkbox("Taquicardia Supraventricular Paroxística")
+    cardiopatia_congenita = st.checkbox("Cardiopatía Congénita")
+    infeccion_tracto_urinario = st.checkbox("Infección del Tracto Urinario")
+    sincopo_neurocardiogenico = st.checkbox("Síncope Neurocardiogénico")
+    ortostatico = st.checkbox("Ortostático")
+    endocarditis_infecciosa = st.checkbox("Endocarditis Infecciosa")
+    shock = st.checkbox("Shock")
 
 # Botón para hacer la predicción
 if st.button('Realizar predicción'):
@@ -130,12 +142,12 @@ if st.button('Realizar predicción'):
         hipertension, 
         enfermedad_coronaria, 
         miocardiopatia, 
-        enfermedad_renal,  # Corrección: 'Enfermedad Renal Crónica'
+        enfermedad_renal_cronica,  # 'Enfermedad Renal Crónica'
         anemia_severa, 
-        anemia, 
+        anemia,  # Ahora se incluye la variable 'anemia'
         angina_estable, 
-        sindrome_coronario_agudo,  # Corrección: 'Síndrome Coronario Agudo'
-        infarto_miocardio,  # Corrección: 'Infarto de Miocardio(STEMI)'
+        sindrome_coronario_agudo,  # 'Síndrome Coronario Agudo'
+        infarto_miocardio,  # 'Infarto de Miocardio(STEMI)'
         dolor_toracico_atipico, 
         insuficiencia_card, 
         insuficiencia_eje_reducida, 
@@ -144,21 +156,21 @@ if st.button('Realizar predicción'):
         bloqueo_card,
         sindrome_nodo_sinusal, 
         lesion_renal, 
-        accidente_cerebrovascular_isquemico,  # Corrección: 'Accidente Cerebrovascular Isquémico'
-        accidente_cerebrovascular_hemorragico,  # Corrección: 'Accidente Cerebrovascular Hemorrágico'
+        accidente_cerebrovascular_isquemico,  # 'Accidente Cerebrovascular Isquémico'
+        accidente_cerebrovascular_hemorragico,  # 'Accidente Cerebrovascular Hemorrágico'
         fibrilacion_auricular, 
         taquicardia_ventricular, 
-        taquicardia_supraventricular_paroxistica,  # Corrección: 'Taquicardia Supraventricular Paroxística'
-        cardiopatia_congenita,  # Corrección: 'Cardiopatía Congénita'
-        infeccion_tracto_urinario,  # Corrección: 'Infección del Tracto Urinario'
-        sincopo_neurocardiogenico,  # Corrección: 'Síncope Neurocardiogénico'
-        ortostatico,  # Corrección: 'Ortostático'
-        endocarditis_infecciosa,  # Corrección: 'Endocarditis Infecciosa'
-        trombosis_venosa_profunda,  # Corrección: 'Trombosis Venosa Profunda'
+        taquicardia_supraventricular_paroxistica,  # 'Taquicardia Supraventricular Paroxística'
+        cardiopatia_congenita,  # 'Cardiopatía Congénita'
+        infeccion_tracto_urinario,  # 'Infección del Tracto Urinario'
+        sincopo_neurocardiogenico,  # 'Síncope Neurocardiogénico'
+        ortostatico,  # 'Ortostático'
+        endocarditis_infecciosa,  # 'Endocarditis Infecciosa'
+        trombosis_venosa_profunda,  # 'Trombosis Venosa Profunda'
         choque_cardiogenico, 
         shock, 
         embolia_pulmonar, 
-        infeccion_toracica  # Corrección: 'Infección Torácica'
+        infeccion_toracica  # 'Infección Torácica'
     ]
     
     # Predicción con el modelo
@@ -170,9 +182,6 @@ if st.button('Realizar predicción'):
     elif prediccion[0] == 1:
         motivo = "Motivo de Alta: Salud plena"
     else:
-        motivo = "Motivo de Alta: Fallecimiento"
+        motivo = "Motivo de Alta: Fallecido"
 
     st.markdown(f"<p class='stText'>{motivo}</p>", unsafe_allow_html=True)
-
-    # Listo
-    
