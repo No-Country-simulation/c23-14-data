@@ -1,6 +1,6 @@
 #recorda pip install streamlit
 #recorda pip install fp
-# se ejecuta con streamlit run src/app_combinada.py 
+# se ejecuta con streamlit run src/app.py 
 from pickle import load
 import streamlit as st
 import pandas as pd
@@ -9,12 +9,16 @@ from io import BytesIO
 from joblib import load
 import plotly.express as px
 import altair as alt
+from io import BytesIO
+import requests
 
 
 
 # Cargar el modelo
 from joblib import load
-model = load("/workspaces/c23-14-data/Models/Model_RF.sav")
+url = "https://github.com/No-Country-simulation/c23-14-data/raw/refs/heads/main/Models/Model_RF.sav"
+response = requests.get(url)
+model = load(BytesIO(response.content))
 
 # Estilos personalizados (CSS)
 st.markdown(
