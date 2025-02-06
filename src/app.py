@@ -1,249 +1,175 @@
-from pickle import load
 import streamlit as st
+from pickle import load
 
+# Cargar el modelo
+model = load(open("/workspaces/c23-14-data/Models/Model_RF.sav", "rb"))
+
+# Estilos personalizados (CSS)
 st.markdown(
     """
     <style>
     .stApp {
-        background-color: #dbd9d9; /* Color gris claro */
+        background-color: #f0f4f7;  /* Color de fondo más claro */
     }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-model = load(open("/workspaces/c23-14-data/MVP/models.sav", "rb"))
-
-#Título
-st.markdown(
-    """
-    <style>
-    .stApp h1 {
-        color: #010369; /* Cambia este valor al color que desees */
-        font-weight: bold; /* Opcional: pone el título en negrita */
-        text-align: center; /* Opcional: centra el título */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Título principal de la aplicación
-st.title('Alta hospitalaria')
-
-st.subheader("Edad:")
-st.markdown(
-    """
-    <style>
-    /* Cambiar el color de fondo y el color del texto */
-    .stRadio label {
-        color: #FF5733; /* Color de los textos de las opciones */
-        font-size: 18px; /* Tamaño del texto */
-        font-weight: bold; /* Negrita */
+    
+    .stTitle {
+        color: #2C3E50;  /* Título oscuro para mejor contraste */
+        font-weight: bold;
     }
 
-    /* Cambiar el color de los botones seleccionados */
-    .stRadio > div > div > div > label {
-        background-color: #010369; /* Color de fondo de las opciones seleccionadas */
-        border-radius: 5px;
+    .stExpanderHeader {
+        background-color: #16A085;  /* Verde brillante para encabezados */
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
     }
 
-    /* Cambiar el color del texto al pasar el mouse por encima */
-    .stRadio > div > div > div > label:hover {
-        background-color: #010369; /* Color cuando el cursor pasa por encima */
-        color: white; /* Color del texto cuando se selecciona */
+    .stExpanderContent {
+        background-color: #EAF0F1;  /* Fondo claro para el contenido */
     }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
-#Subtitulos
-st.markdown(
-    """
-    <style>
-    /* Cambiar estilo de los títulos (labels) */
     .stRadio label, .stSlider label, .stCheckbox label {
-        color: #010369; /* Cambiar color de los títulos */
-        font-size: 50px !important;  
-        font-weight: bold; !important;
-        text-align: left !important; /* Opcional: alineación */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-
-#Variables
-
-region =  st.radio(
-    "", 
-    ['Región de Ñuble',
- 'Región del Biobio',
- 'Región Metropolitana',
- 'Región de Tarapacá',
- 'Región de Los Rios',
- 'Región del Libertador Gral Bernardo Ohiggins',
- 'Región de La Araucania',
- 'Región de Valparaiso',
- 'Región de Los Lagos',
- 'Región de Coquimbo',
- 'Región del Maule',
- 'Región de Arica y Parinacota',
- 'Región de Antofagasta',
- 'Región de Atacama',
- 'Región de Magallanes y de la Antartica Chilena',
- 'Región de Aysén del Gral Carlos Ibañez del Campo'],
-    index=None)
-
-st.subheader("Nivel socioeconómico:")
-
-nivel_socioeconomico = st.radio(
-    "",
-    ['Bajo-medio', 'Bajo-medio-alto', 'Medio', 'Bajo', 'Alto', 'Medio-alto', 'Bajo-alto'],
-     index= None)
-
-st.markdown(
-    """
-    <style>
-    /* Cambiar el color de fondo y el color del texto en el slider */
-    .stSlider div {
-        background-color: ##d9dadb; /* Color de fondo del slider */
-        color: #010369; /* Color del texto */
-        font-size: 16px; /* Tamaño del texto */
+        color: #1ABC9C;  /* Color vibrante para textos */
+        font-size: 20px;
+        font-weight: bold;
     }
 
-    /* Personalizar el color del track y el botón del slider */
-    .stSlider > div > div > div {
-        background-color: #fffff; /* Color del track */
-        height: 8px; /* Altura del track */
-    }
-
-    .stSlider > div > div > input {
-        background-color: #010369; /* Color de la barra del slider */
-        width: 20px; /* Ancho del slider */
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-
-
-
-
-st.subheader("¿Cuántas personas viven con usted?:")
-
-personas_por_hogar = st.slider('', min_value=1, max_value=13, step=1)
-
-st.subheader("Edad:")
-
-edad = st.slider('', min_value=15, max_value=100, step=1)
-
-st.subheader("Estado civil:")
-
-estado_civil = st.radio(
-    "",
-    ['Casado(a)','Separado(a)','Conviviente sin acuerdo de unión civil', 'Soltero(a)', 'Viudo(a)', 'Divorciado(a)','Anulado(a)', 'Conviviente civil'],
-index= None)
-
-st.subheader("Nivel educacional:")
-
-nivel_educacional = st.radio(
-    "",
-    ['Básica', 'Técnica nivel superior', 'Media científico humanista', 'Técnica comercial industrial normalista', 'Media técnica profesional', 'Profesional', 'Diferencial', 'Ninguno', 'Magister', 'Doctorado'],
-     index= None)
-
-st.subheader("Previsión:")
-
-prevision =  st.radio(
-    "",
-    ['FONASA','Isapre','FF.AA. y del Orden','Ninguno (particular)','Otro sistema'],
-    index = None
-)
-
-#Diccionarios
-region_dic = {'Región de ñuble': 0,
- 'Región del Biobio' : 1,
- 'Región Metropolitana' : 2,
- 'Región de Tarapacá' : 3,
- 'Región de Los Rios': 4,
- 'Región del Libertador Gral Bernardo Ohiggins': 5,
- 'Región de La Araucania': 6,
- 'Región de Valparaiso': 7,
- 'Región de Los Lagos': 8,
- 'Región de Coquimbo':9,
- 'Región del Maule':10,
- 'Región de Arica y Parinacota': 11,
- 'Región de Antofagasta': 12,
- 'Región de Atacama':13,
- 'Región de Magallanes y de la Antartica Chilena': 14,
- 'Región de Aysén del Gral Carlos Ibañez del Campo': 15}
-
-nivel_socioeconomico_dic = {
-'Bajo-medio': 0,
- 'Bajo-medio-alto': 1,
- 'Medio': 2,
- 'Bajo': 3,
- 'Alto': 4,
- 'Medio-alto': 4,
- 'Bajo-alto': 6}
-
-estado_civil_dic = {'Casado(a)': 0,
- 'Separado(a)': 1,
- 'Conviviente sin acuerdo de unión civil': 2,
- 'Soltero(a)': 3,
- 'Viudo(a)': 4,
- 'Divorciado(a)': 5,
- 'Anulado(a)': 6,
-'Conviviente civil': 7}
-
-nivel_educacional_dic= {'Básica': 0,
-'Técnica nivel superior': 1,
-'Media científico humanista': 2,
-'Técnica comercial industrial normalista': 3,
-'Media técnica profesional': 4,
-'Profesional': 5,
-'Diferencial': 6,
-'Ninguno': 7,
-'Magister': 8,
-'Doctorado': 9}
-
-prevision_dic= {
-'FONASA': 0,
- 'Isapre': 1,
- 'FF.AA. y del Orden': 2,
- 'Ninguno (particular)': 3,
-'Otro sistema': 4}
-
-#Botón final
-st.markdown(
-    """
-    <style>
     .stButton>button {
-        background-color: #010369; /* Color de fondo del botón (Azul) */
-        color: white; /* Color del texto */
-        font-size: 30px; /* Tamaño de la fuente */
-        font-weight: bold; /* Negrita */
-        border-radius: 10px; /* Bordes redondeados */
-        border: none; /* Sin borde */
-        padding: 15px 25px; /* Espaciado interno */
-        transition: background-color 0.3s ease; /* Efecto de transición para el color de fondo */
+        background-color: #E74C3C;  /* Rojo brillante para el botón */
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 15px 30px;
+        border-radius: 8px;
+        border: none;
+        transition: background-color 0.3s ease;
     }
 
     .stButton>button:hover {
-        background-color: #010369; /* Color de fondo cuando se pasa el mouse*/
+        background-color: #C0392B;  /* Rojo oscuro al hacer hover */
+    }
+
+    .stText {
+        color: #34495E;  /* Texto de predicción en color oscuro */
+        font-size: 24px;
+        font-weight: bold;
     }
     </style>
-    """, 
-    unsafe_allow_html=True
+    """, unsafe_allow_html=True
 )
 
-if st.button('Haz clic aquí'):
-    prediccion = model.predict([
-        [region_dic[region], nivel_socioeconomico_dic[nivel_socioeconomico], personas_por_hogar, edad,
-         prevision_dic[prevision], estado_civil_dic[estado_civil], nivel_educacional_dic[nivel_educacional]]
-    ])
-    st.write('Salario estimado:', prediccion)
+# Título
+st.title('Predicción de Motivo de Alta Hospitalaria')
+
+# Grupo de Datos Demográficos
+with st.expander("Datos Demográficos"):
+    edad = st.slider("Edad", min_value=15, max_value=100, step=1)
+    genero = st.radio("Género", ['Masculino', 'Femenino'])
+    residencia = st.radio("Residencia", ['Urbana', 'Rural'])
+
+# Grupo de Tipo de Admisión
+with st.expander("Tipo de Admisión"):
+    tipo_admision = st.radio("Tipo de Admisión", ['Emergencia', 'Ambulatoria'])
+
+# Grupo de Hábitos y Factores de Riesgo
+with st.expander("Hábitos y Factores de Riesgo"):
+    fumador = st.checkbox("Fumador")
+    alcohol = st.checkbox("Consumo de Alcohol")
+    diabetes = st.checkbox("Diabetes Mellitus")
+    hipertension = st.checkbox("Hipertensión")
+    enfermedad_coronaria = st.checkbox("Enfermedad Coronaria Arterial")
+
+# Grupo de Enfermedades Cardíacas
+with st.expander("Enfermedades Cardíacas"):
+    miocardiopatia = st.checkbox("Miocardiopatía")
+    insuficiencia_card = st.checkbox("Insuficiencia Cardíaca")
+    insuficiencia_eje_reducida = st.checkbox("Insuficiencia Cardíaca con Fracción de Eyección Reducida")
+    insuficiencia_eje_normal = st.checkbox("Insuficiencia Cardíaca con Fracción de Eyección Normal")
+    enfermedad_valvular = st.checkbox("Enfermedad Valvular Cardíaca")
+    bloqueo_card = st.checkbox("Bloqueo Cardíaco Completo")
+
+# Grupo de Complicaciones Agudas
+with st.expander("Complicaciones Agudas"):
+    sindrome_nodo_sinusal = st.checkbox("Síndrome del Nodo Sinusal Enfermo")
+    lesion_renal = st.checkbox("Lesión Renal Aguda")
+    accidente_cerebrovascular_isquemico = st.checkbox("Accidente Cerebrovascular Isquémico")
+    fibrilacion_auricular = st.checkbox("Fibrilación Auricular")
+    taquicardia_ventricular = st.checkbox("Taq. Ventricular")
+    choque_cardiogenico = st.checkbox("Choque Cardiogénico")
+
+# Grupo de Infecciones y Trombosis
+with st.expander("Infecciones y Trombosis"):
+    embolia_pulmonar = st.checkbox("Embolia Pulmonar")
+    infeccion_toracica = st.checkbox("Infección Torácica")
+    trombosis_venosa_profunda = st.checkbox("Trombosis Venosa Profunda")
+
+# Otras condiciones
+with st.expander("Otras Condiciones"):
+    anemia_severa = st.checkbox("Anemia Severa")
+    angina_estable = st.checkbox("Angina Estable")
+    infarto_miocardio = st.checkbox("Infarto de Miocardio (STEMI)")
+    dolor_toracico_atipico = st.checkbox("Dolor Torácico Atípico")
+
+# Botón para hacer la predicción
+if st.button('Realizar predicción'):
+    # Corregimos los tipos
+    # Transformar residencia, tipo_admision, genero en booleans
+    residencia = 1 if residencia == "Urbana" else 0  
+    tipo_admision = 1 if tipo_admision == "Emergencia" else 0  # "Emergencia"
+    genero = 1 if genero == "Masculino" else 0  # Espacio innecesario removido
+
+    # Crear el vector de entrada para el modelo
+    features = [
+        edad, 
+        genero, 
+        residencia, 
+        tipo_admision, 
+        fumador, 
+        alcohol, 
+        diabetes, 
+        hipertension, 
+        enfermedad_coronaria, 
+        miocardiopatia, 
+        enfermedad_renal,  # Corrección: 'Enfermedad Renal Crónica'
+        anemia_severa, 
+        anemia, 
+        angina_estable, 
+        sindrome_coronario_agudo,  # Corrección: 'Síndrome Coronario Agudo'
+        infarto_miocardio,  # Corrección: 'Infarto de Miocardio(STEMI)'
+        dolor_toracico_atipico, 
+        insuficiencia_card, 
+        insuficiencia_eje_reducida, 
+        insuficiencia_eje_normal, 
+        enfermedad_valvular, 
+        bloqueo_card,
+        sindrome_nodo_sinusal, 
+        lesion_renal, 
+        accidente_cerebrovascular_isquemico,  # Corrección: 'Accidente Cerebrovascular Isquémico'
+        accidente_cerebrovascular_hemorragico,  # Corrección: 'Accidente Cerebrovascular Hemorrágico'
+        fibrilacion_auricular, 
+        taquicardia_ventricular, 
+        taquicardia_supraventricular_paroxistica,  # Corrección: 'Taquicardia Supraventricular Paroxística'
+        cardiopatia_congenita,  # Corrección: 'Cardiopatía Congénita'
+        infeccion_tracto_urinario,  # Corrección: 'Infección del Tracto Urinario'
+        sincopo_neurocardiogenico,  # Corrección: 'Síncope Neurocardiogénico'
+        ortostatico,  # Corrección: 'Ortostático'
+        endocarditis_infecciosa,  # Corrección: 'Endocarditis Infecciosa'
+        trombosis_venosa_profunda,  # Corrección: 'Trombosis Venosa Profunda'
+        choque_cardiogenico, 
+        shock, 
+        embolia_pulmonar, 
+        infeccion_toracica  # Corrección: 'Infección Torácica'
+    ]
+    
+    # Predicción con el modelo
+    prediccion = model.predict([features])
+    
+    # Mostrar la predicción de "Motivo de Alta"
+    if prediccion[0] == 0:
+        motivo = "Motivo de Alta: Alta contra el juicio del facultativo"
+    elif prediccion[0] == 1:
+        motivo = "Motivo de Alta: Salud plena"
+    else:
+        motivo = "Motivo de Alta: Fallecimiento"
+
+    st.markdown(f"<p class='stText'>{motivo}</p>", unsafe_allow_html=True)
