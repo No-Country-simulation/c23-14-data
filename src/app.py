@@ -3,7 +3,8 @@ import streamlit as st
 from pickle import load
 
 # Cargar el modelo
-model = load(open("/workspaces/c23-14-data/Models/Model_RF.sav", "rb"))
+from joblib import load
+model = load("/workspaces/c23-14-data/Models/Model_RF.sav")
 
 # Estilos personalizados (CSS)
 st.markdown(
@@ -225,20 +226,4 @@ if st.button('Realizar predicción'):
 
     st.markdown(f"<p class='stText'>{motivo}</p>", unsafe_allow_html=True)
 
-     # Mostrar las features y sus valores
-    st.subheader("Valores de las características:")
-    for feature, value in zip([
-        "Edad", "Género", "Residencia", "Tipo de Admisión", "Fumador", "Consumo de Alcohol", 
-        "Diabetes Mellitus", "Hipertensión", "Enfermedad Coronaria", "Miocardiopatía", 
-        "Enfermedad Renal Crónica", "Anemia Severa", "Anemia", "Angina Estable", 
-        "Síndrome Coronario Agudo", "Infarto de Miocardio (STEMI)", "Dolor Torácico Atípico", 
-        "Insuficiencia Cardíaca", "Insuficiencia Cardíaca con Fracción de Eyección Reducida", 
-        "Insuficiencia Cardíaca con Fracción de Eyección Normal", "Enfermedad Valvular Cardíaca", 
-        "Bloqueo Cardíaco Completo", "Síndrome del Nodo Sinusal Enfermo", "Lesión Renal Aguda", 
-        "Accidente Cerebrovascular Isquémico", "Accidente Cerebrovascular Hemorrágico", 
-        "Fibrilación Auricular", "Taq. Ventricular", "Taquicardia Supraventricular Paroxística", 
-        "Cardiopatía Congénita", "Infección del Tracto Urinario", "Síncope Neurocardiogénico", 
-        "Ortostático", "Endocarditis Infecciosa", "Trombosis Venosa Profunda", "Choque Cardiogénico", 
-        "Shock", "Embolia Pulmonar", "Infección Torácica"
-    ], features):
-        st.write(f"{feature}: {value}")
+     
